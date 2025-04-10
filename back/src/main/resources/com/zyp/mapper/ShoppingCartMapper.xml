@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyp.mapper.ShoppingCartMapper">
+    <insert id="addNew" useGeneratedKeys="true" keyProperty="id">
+        insert into shopping_cart (user_id, medicine_id, name, image, price, create_time, update_time)
+        VALUES
+        (#{userId},#{medicineId},#{name},#{image},#{price},#{createTime},#{updateTime})
+    </insert>
+</mapper>

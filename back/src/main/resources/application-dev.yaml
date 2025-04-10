@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://146.56.235.254:3306/chuangyue
+    username: root
+    password: Zypszabl
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+chuangyue:
+  wechat:
+    appid: wxb9872538982257d7
+    secret: 7327e0f73d4b35c814ed0e78ad71c798

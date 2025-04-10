@@ -1,0 +1,69 @@
+server:
+  port: 8080
+
+
+
+spring:
+  profiles:
+    active: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://146.56.235.254:3306/chuangyue
+    username: root
+    password: Zypszabl
+    hikari:
+      max-lifetime: 60000
+  data:
+    redis:
+      host: 146.56.235.254
+      password: Zypszabl
+      port: 6379
+      lettuce:
+        pool:
+          max-active: 8 # 最大连接数
+          max-idle: 8 #最大空闲数
+          min-idle: 0 # 最小空闲数
+          max-wait: 100 # 最大等待时间
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      zyp:
+        mapper: debug
+        service: info
+        controller: info
+
+chuangyue:
+  jwt:
+    user-secret-key: chuangyue
+    user-token-name: authorization
+    user-ttl: 86400000
+    admin-secret-key: chuangyue
+    admin-token-name: authorization
+    admin-ttl: 86400000
+    doctor-secret-key: chuangyue
+    doctor-token-name: authorization
+    doctor-ttl: 86400000
+  wechat:
+    appid: ${chuangyue.wechat.appid}
+    secret: ${chuangyue.wechat.secret}
+  minio:
+    # 访问的url
+    endpoint: http://146.56.235.254
+    # API的端口
+    port: 9000
+    # 秘钥
+    accessKey: M9OUgYQSGmO0eIFvjSbv
+    secretKey: ujBdEWdxEG3outCmX5NZiUFJ5VlCHWuRMvsv9jm9
+    secure: false
+    bucket-name: chuangyue-medicine-photo # 桶名 我这是给出了一个默认桶名
+    image-size: 10485760 # 我在这里设定了 图片文件的最大大小
+    file-size: 1073741824 # 此处是设定了文件的最大大小

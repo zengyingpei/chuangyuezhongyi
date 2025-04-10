@@ -1,0 +1,207 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path" : "pages/my/my",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/message/message",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的消息",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/shop/shop",
+			"style" : 
+			{
+				"navigationBarTitleText" : "商城",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/medicine/medicine",
+			"style" : 
+			{
+				"navigationBarTitleText" : "药品商城",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/keep_medicine/keep_medicine",
+			"style" : 
+			{
+				"navigationBarTitleText" : "养生商城",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/about/about",
+			"style" : 
+			{
+				"navigationBarTitleText" : "关于",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/login/login",
+			"style" : 
+			{
+				"navigationBarTitleText" : "登录",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/text/text",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/my/update_user_message",
+			"style" : 
+			{
+				"navigationBarTitleText" : "用户信息",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/questionnaire/questionnaire",
+			"style" : 
+			{
+				"navigationBarTitleText" : "问卷测评",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/select_find/select_find",
+			"style" : 
+			{
+				"navigationBarTitleText" : "找医生",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/doctor_list/doctor_list",
+			"style" : 
+			{
+				"navigationBarTitleText" : "找医生",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/doctor_detail/doctor_detail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/registration/registration",
+			"style" : 
+			{
+				"navigationBarTitleText" : "预约时间",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/shopping_cart/shopping_cart",
+			"style" : 
+			{
+				"navigationBarTitleText" : "购物车",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/address/address",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的地址",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/address/update_address",
+			"style" : 
+			{
+				"navigationBarTitleText" : "修改地址",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/address/add_address",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/message/chat",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/icons/home.png",
+				"selectedIconPath": "static/icons/home_selected.png"
+			},
+			{
+				"pagePath": "pages/message/message",
+				"text": "我的消息",
+				"iconPath": "static/icons/message.png",
+				"selectedIconPath": "static/icons/message_selected.png"
+			},
+			{
+				"pagePath": "pages/shop/shop",
+				"text": "商城",
+				"iconPath": "static/icons/shop.png",
+				"selectedIconPath": "static/icons/shop_selected.png"
+			},
+			{
+				"pagePath": "pages/my/my",
+				"text": "个人中心",
+				"iconPath": "static/icons/person.png",
+				"selectedIconPath": "static/icons/person_selected.png"
+			}
+		]
+	},
+	"uniIdRouter": {},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	}
+}

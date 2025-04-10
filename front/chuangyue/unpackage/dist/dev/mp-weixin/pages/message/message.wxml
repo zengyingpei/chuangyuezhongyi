@@ -1,0 +1,1 @@
+<view class="body"><view wx:for="{{a}}" wx:for-item="item" wx:key="c" class="box" bindtap="{{item.d}}"><view class="photo"><image src="/static/logo.png" class="img"></image></view><view class="name">{{item.a}}</view><view class="time">{{item.b}}</view></view></view>

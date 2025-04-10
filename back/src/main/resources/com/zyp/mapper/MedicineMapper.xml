@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyp.mapper.MedicineMapper">
+    <select id="selectAll1" resultType="com.zyp.pojo.Medicine">
+        select * from medicine
+        <where>
+            <if test="name!=null and name!=''">
+                and name like concat('%', #{name},'%')
+            </if>
+            and type = 1
+        </where>
+    </select>
+
+    <select id="selectAll2" resultType="com.zyp.pojo.Medicine">
+        select * from medicine
+        <where>
+            <choose>
+                <when test="categoryId!=null and categoryId!='' and categoryId!=-1">
+                    type = #{categoryId}
+                </when>
+                 <when test="name!=null and name!=''">
+                     name like concat('%',#{name},'%')
+                 </when>
+                <otherwise>
+                    type != 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+</mapper>

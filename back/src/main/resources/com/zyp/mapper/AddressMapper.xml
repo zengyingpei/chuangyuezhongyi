@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyp.mapper.AddressMapper">
+    <update id="update">
+        update address 
+        <set>
+            <if test="receiverName!=null and receiverName!=''">
+                receiver_name = #{receiverName},
+            </if>
+            <if test="receiverPhone!=null and receiverPhone!=''">
+                receiver_phone = #{receiverPhone},
+            </if>
+            <if test="province!=null and province!=''">
+                province = #{province},
+            </if>
+            <if test="city!=null and city!=''">
+                city =#{city},
+            </if>
+            <if test="district!=null and district!=''">
+                district = #{district},
+            </if>
+            <if test="detail!=null and detail!=''">
+                detail=#{detail},
+            </if>
+            is_default = #{isDefault}
+        </set>
+        where id =#{id}
+    </update>
+</mapper>
