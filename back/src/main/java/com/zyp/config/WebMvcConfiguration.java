@@ -60,18 +60,18 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     private DoctorLoginInterceptor doctorLoginInterceptor;
 
     protected void addInterceptors(InterceptorRegistry registry) {
-        log.info("开始注册自定义拦截器...");
-        registry.addInterceptor(userLoginInterceptor)
-                .addPathPatterns("/api/user/**")
-                .excludePathPatterns("/api/user/user/login");
-
-        registry.addInterceptor(adminLoginInterceptor)
-                .addPathPatterns("/api/admin/**")
-                .excludePathPatterns("/api/admin/admin/login");
-
-        registry.addInterceptor(doctorLoginInterceptor)
-                .addPathPatterns("/api/doctor/**")
-                .excludePathPatterns("/api/doctor/doctor/login");
+//        log.info("开始注册自定义拦截器...");
+//        registry.addInterceptor(userLoginInterceptor)
+//                .addPathPatterns("/api/user/**")
+//                .excludePathPatterns("/api/user/user/login");
+//
+//        registry.addInterceptor(adminLoginInterceptor)
+//                .addPathPatterns("/api/admin/**")
+//                .excludePathPatterns("/api/admin/admin/login");
+//
+//        registry.addInterceptor(doctorLoginInterceptor)
+//                .addPathPatterns("/api/doctor/**")
+//                .excludePathPatterns("/api/doctor/doctor/login");
     }
 
 }
