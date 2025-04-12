@@ -28,5 +28,5 @@ public interface TimeSlotMapper {
      * @ author DELL
      */
     @Update("update time_slot set available=available+1 where doctor_id=#{doctorId} and date=#{date} and slot=#{timeSlot}")
-    void addAvailable(Long doctorId, LocalDate date, String timeSlot);
+    void addAvailable(Long doctorId, LocalDate date, Integer timeSlot);
 }

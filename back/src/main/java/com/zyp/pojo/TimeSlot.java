@@ -18,7 +18,7 @@ public class TimeSlot implements Serializable {
     private Long doctorId;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
-    private String slot;
+    private Integer slot;
     private Integer available;
     private Integer total;
 }

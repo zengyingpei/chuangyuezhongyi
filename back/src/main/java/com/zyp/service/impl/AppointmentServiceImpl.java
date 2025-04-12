@@ -1,6 +1,7 @@
 package com.zyp.service.impl;
 
 import com.zyp.dto.AddAppointmentDto;
+import com.zyp.exception.AppointFailedException;
 import com.zyp.mapper.AppointmentMapper;
 import com.zyp.mapper.TimeSlotMapper;
 import com.zyp.pojo.Appointment;
@@ -8,6 +9,7 @@ import com.zyp.pojo.TimeSlot;
 import com.zyp.service.AppointmentService;
 import com.zyp.utils.ThreadLocalUtil;
 import com.zyp.vo.AppointmentOfDoctorVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private AppointmentMapper appointmentMapper;
@@ -40,7 +43,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentOfDoctorVo appointmentOfDoctorVo = AppointmentOfDoctorVo.builder()
                     .id(timeSlot.getId())
                     .date(timeSlot.getDate())
-                    .slot(timeSlot.getSlot())
+                    .slot(timeSlot.getSlot() == 0? "上午" : "下午")
                     .available(timeSlot.getAvailable())
                     .total(timeSlot.getTotal())
                     .build();
@@ -60,6 +63,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         // 1、time_slot表的可用名额需要减少
         Long slotId = addAppointmentDto.getSlotId();
+        TimeSlot slot = timeSlotMapper.selectById(slotId);
+        if(slot.getAvailable()<=0){
+            log.info("可用人数不足，换一个时间吧");
+            throw new AppointFailedException("可用人数不足，换一个时间吧");
+
+        }
         timeSlotMapper.reduceAvailable(slotId);
 
         // 2、appointment表需要新增记录

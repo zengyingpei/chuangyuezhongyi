@@ -18,7 +18,7 @@ public class Appointment implements Serializable {
     private Long userId;
     private Long doctorId;
     private LocalDate date;
-    private String timeSlot;
+    private Integer timeSlot;
     private Integer status;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
