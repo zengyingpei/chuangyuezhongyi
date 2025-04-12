@@ -91,5 +91,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     n: common_vendor.o((...args) => $options.onSubmit && $options.onSubmit(...args))
   };
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-e1e1f767"], ["__file", "D:/chuangyue/front/chuangyue/pages/address/add_address.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-e1e1f767"], ["__file", "D:/毕业设计/projects/front/chuangyue/pages/address/add_address.vue"]]);
 wx.createPage(MiniProgramPage);

@@ -174,5 +174,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     b: common_vendor.o(($event) => $options.selectAll())
   };
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-7cc1684a"], ["__file", "D:/chuangyue/front/chuangyue/pages/shopping_cart/shopping_cart.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-7cc1684a"], ["__file", "D:/毕业设计/projects/front/chuangyue/pages/shopping_cart/shopping_cart.vue"]]);
 wx.createPage(MiniProgramPage);

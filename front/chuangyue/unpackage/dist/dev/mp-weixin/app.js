@@ -36,7 +36,7 @@ const _sfc_main = {
   },
   globalData: {}
 };
-const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/chuangyue/front/chuangyue/App.vue"]]);
+const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/毕业设计/projects/front/chuangyue/App.vue"]]);
 function createApp() {
   const app = common_vendor.createSSRApp(App);
   app.use(store_index.store);

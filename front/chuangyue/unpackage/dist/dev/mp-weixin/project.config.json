@@ -18,7 +18,7 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.3.4",
+  "libVersion": "3.8.0",
   "appid": "wxb9872538982257d7",
   "projectname": "chuangyue",
   "condition": {

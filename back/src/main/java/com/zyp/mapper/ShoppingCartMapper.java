@@ -76,4 +76,14 @@ public interface ShoppingCartMapper {
      */
     @Delete("delete from shopping_cart where id =#{id}")
     void deleteOne(Long id);
+
+    /**
+     * @ description 根据id获取金额
+     * @param id
+     * @ return java.math.BigDecimal
+     * @ author DELL
+     */
+    @Select("select price from shopping_cart where id = #{id}")
+    BigDecimal selectAmountById(Long id);
+
 }

@@ -48,7 +48,7 @@ public class UserController {
         Map<String, Object> claims=new HashMap<>();
         claims.put("userId", user.getId());     //获取用户的id
         String token=JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(),claims);
-
+        log.info("用户的token是 {}",token);
         //封装返回给前端的数据
         WxUserLoginVo wxUserLoginVo=WxUserLoginVo.builder()
                 .id(user.getId())
