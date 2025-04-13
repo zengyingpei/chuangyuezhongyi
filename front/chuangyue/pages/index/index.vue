@@ -85,7 +85,7 @@
 			<swiper-item v-for="(item, index) in arr1" :key="item.id">
 				<view class="doc_swiper-item" >
 					<view class="doc_content">
-						<view class="doc_card">
+						<view class="doc_card" @click="goDetail(arr1[index].id)">
 							<view class="doc_left_img">
 								<image class="doc_images" :src="arr1[index].avatar" mode=""></image>
 							</view>
@@ -102,7 +102,7 @@
 						</view>
 						
 						
-						<view class="doc_card">
+						<view class="doc_card" @click="goDetail(arr2[index].id)">
 							<view class="doc_left_img">
 								<image class="doc_images" :src="arr2[index].avatar" mode=""></image>
 							</view>
@@ -230,6 +230,12 @@
 							})
 						}
 					}
+				})
+			},
+			// 进入医生详情页
+			goDetail(doctorId){
+				uni.navigateTo({
+					url: `/pages/doctor_detail/doctor_detail?doctorId=${doctorId}`
 				})
 			}
 		}

@@ -4,6 +4,8 @@ import com.zyp.dto.AddAppointmentDto;
 import com.zyp.pojo.Result;
 import com.zyp.service.AppointmentService;
 import com.zyp.vo.AppointmentOfDoctorVo;
+import com.zyp.vo.AppointmentVO;
+import io.netty.channel.PreferHeapByteBufAllocator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +43,10 @@ public class AppointmentController {
         log.info("addAppointment的controller{}",addAppointmentDto);
         appointmentService.addAppointment(addAppointmentDto);
         return Result.success();
+    }
+
+    @GetMapping("/all")
+    public Result<List<AppointmentVO>> selectAll(){
+        return Result.success(appointmentService.selectAll());
     }
 }

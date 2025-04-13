@@ -70,6 +70,12 @@ const _sfc_main = {
           }
         }
       });
+    },
+    // 进入医生详情页
+    goDetail(doctorId) {
+      common_vendor.index.navigateTo({
+        url: `/pages/doctor_detail/doctor_detail?doctorId=${doctorId}`
+      });
     }
   }
 };
@@ -90,12 +96,14 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         c: common_vendor.t($data.arr1[index].level),
         d: common_vendor.t($data.arr1[index].workplace),
         e: common_vendor.t($data.arr1[index].desc),
-        f: $data.arr2[index].avatar,
-        g: common_vendor.t($data.arr2[index].name),
-        h: common_vendor.t($data.arr2[index].level),
-        i: common_vendor.t($data.arr2[index].workplace),
-        j: common_vendor.t($data.arr2[index].desc),
-        k: item.id
+        f: common_vendor.o(($event) => $options.goDetail($data.arr1[index].id), item.id),
+        g: $data.arr2[index].avatar,
+        h: common_vendor.t($data.arr2[index].name),
+        i: common_vendor.t($data.arr2[index].level),
+        j: common_vendor.t($data.arr2[index].workplace),
+        k: common_vendor.t($data.arr2[index].desc),
+        l: common_vendor.o(($event) => $options.goDetail($data.arr2[index].id), item.id),
+        m: item.id
       };
     }),
     d: common_vendor.f($data.consults, (item, index, i0) => {

@@ -23,25 +23,24 @@ public class AppointmentTask {
 
     /**
      * @ description  检查超过十分钟没有付款的预约订单
-     *
      * @ return void
      * @ author DELL
      */
     @Scheduled(cron = "0 * * * * ? ")   //每秒钟第0秒执行
     @Transactional
-    public void autoInsertNewTimeSlot(){
+    public void autoInsertNewTimeSlot() {
         log.info("start task");
         //计算获得十分钟前
         LocalDateTime time = LocalDateTime.now().plusMinutes(-10);
         // 查找订单状态是未付款，时间是十分钟前
-        List<Appointment> list =  appointmentMapper.selectAllTimeOut(1,time);
+        List<Appointment> list = appointmentMapper.selectAllTimeOut(0, time);
         // 存在这种订单
-        if(list!=null && !list.isEmpty()){
+        if (list != null && !list.isEmpty()) {
             for (Appointment appointment : list) {
                 //修改订单状态
                 appointmentMapper.updateStatusTimeOut(appointment.getId());
                 // 时间段名额加1
-                timeSlotMapper.addAvailable(appointment.getDoctorId(),appointment.getDate(), appointment.getTimeSlot());
+                timeSlotMapper.addAvailable(appointment.getDoctorId(), appointment.getDate(), appointment.getTimeSlot());
             }
         }
     }

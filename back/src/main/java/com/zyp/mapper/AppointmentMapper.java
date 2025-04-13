@@ -31,6 +31,9 @@ public interface AppointmentMapper {
      * @ return void
      * @ author DELL
      */
-    @Update("update appointment set status=4,update_time=now() where id=#{id}")
+    @Update("update appointment set status=3,update_time=now() where id=#{id}")
     void updateStatusTimeOut(Long id);
+
+    @Select("select * from appointment where user_id = #{userId} order by create_time desc")
+    List<Appointment> selectAllByUserId(Long userId);
 }
