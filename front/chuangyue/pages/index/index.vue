@@ -130,8 +130,8 @@
 			养生资讯
 		</view>
 		<view class="consult_content">
-			<view class="consult_card" v-for="(item, index) in consults" :key="item.id">
-				<view class="consult_card_left">
+			<view class="consult_card" v-for="(item, index) in consults" :key="item.id"  >
+				<view class="consult_card_left" @click="handleClick(item.id)">
 					<view class="consult_card_left_top">
 						{{item.title}}
 					</view>
@@ -158,6 +158,7 @@
 
 <script>
 	import {baseUrl} from '../../common/js/utils.js'
+
 	
 	export default {
 		
@@ -185,23 +186,26 @@
 					{id:7, name:"gg"},
 					{id:8, name:"hh"},
 				],
-				consults:[
-					{id:1, title:"晨起后的黄金时间别浪费，改掉4个坏习惯，更能健康长寿",from:"每日健康",img_url:"../../static/imgs/women.jpg"},
-					{id:2, title:"“三高”必喝茶饮:降压、降糖还能滋养肝肾",from:"每日健康",img_url:"../../static/imgs/tea.jpg"},
-					{id:3, title:"“饭量决定寿命”，吃得越多“走”得越早，是真的吗?",from:"每日健康",img_url:"../../static/imgs/ta.jpg"},
-					{id:4, title:"“入夏无病三分虚”，做好这些防护措施，让夏天不再难熬",from:"每日健康",img_url:"../../static/imgs/flower.jpg"},
-					{id:5, title:"食物分阴阳，吃对才健康，一招教您辨别食物的阴阳属性",from:"每日健康",img_url:"../../static/imgs/阴阳.jpg"},
-					{id:6, title:"一年四季都“怕冷”，这类人要如何养?",from:"每日健康",img_url:"../../static/imgs/阳虚.jpg"},
-				]
+				// consults:[
+				// 	{id:1, title:"晨起后的黄金时间别浪费，改掉4个坏习惯，更能健康长寿",from:"每日健康",img_url:"../../static/imgs/women.jpg"},
+				// 	{id:2, title:"“三高”必喝茶饮:降压、降糖还能滋养肝肾",from:"每日健康",img_url:"../../static/imgs/tea.jpg"},
+				// 	{id:3, title:"“饭量决定寿命”，吃得越多“走”得越早，是真的吗?",from:"每日健康",img_url:"../../static/imgs/ta.jpg"},
+				// 	{id:4, title:"“入夏无病三分虚”，做好这些防护措施，让夏天不再难熬",from:"每日健康",img_url:"../../static/imgs/flower.jpg"},
+				// 	{id:5, title:"食物分阴阳，吃对才健康，一招教您辨别食物的阴阳属性",from:"每日健康",img_url:"../../static/imgs/阴阳.jpg"},
+				// 	{id:6, title:"一年四季都“怕冷”，这类人要如何养?",from:"每日健康",img_url:"../../static/imgs/阳虚.jpg"},
+				// ]
+				consults:[]
 				
 				
 			}
 		},
 		onLoad (option){
-			this.getDatas();	//首页动态资源加载
+			this.getDatas();//首页动态资源加载
+			this.getConsults()
 		},
 		onShow(){
-			this.getDatas();	// 重新打开页面的时候，也加载数据
+			this.getDatas();
+			this.getConsults()// 重新打开页面的时候，也加载数据
 		},
 		methods: {
 			goToFind(){
@@ -220,11 +224,34 @@
 					success: (res) => {
 						if(res.data.code==1){
 							console.log(res.data.data);
+							
 							this.arr1=res.data.data.slice(0,5);
 							this.arr2=res.data.data.slice(5,10);
 						}else{
-							uni.showToast({
-								duration:1000,
+								uni.showToast({
+									duration:1000,
+								icon:'error',
+								title:"数据获取失败"
+							})
+						}
+					}
+				})
+			},
+			getConsults(){
+				let token=uni.getStorageSync('authorization');
+				uni.request({
+					url: `${baseUrl}/api/user/consults/list`,
+					method:'GET',
+					header:{
+						authorization : token
+					},
+					success: (res) => {
+						if(res.data.code==1){
+							console.log('res',res)
+							this.consults=res.data.data;
+						}else{
+								uni.showToast({
+									duration:1000,
 								icon:'error',
 								title:"数据获取失败"
 							})
@@ -236,6 +263,15 @@
 			goDetail(doctorId){
 				uni.navigateTo({
 					url: `/pages/doctor_detail/doctor_detail?doctorId=${doctorId}`
+				})
+			},
+			handleClick(id){
+				console.log('id=',id)
+				uni.navigateTo({
+					url:"/pages/index/info?&id="+id
+				})
+				uni.navigateTo({
+					url:"/pages/preview/preview?&id="+id
 				})
 			}
 		}
