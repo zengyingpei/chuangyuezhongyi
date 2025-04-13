@@ -7,6 +7,12 @@
 			}
 		},
 		{
+			"path": "pages/index/info",
+			"style": {
+				"navigationBarTitleText": "咨询"
+			}
+		},
+		{
 			"path" : "pages/my/my",
 			"style" : 
 			{

@@ -270,9 +270,6 @@
 				uni.navigateTo({
 					url:"/pages/index/info?&id="+id
 				})
-				uni.navigateTo({
-					url:"/pages/preview/preview?&id="+id
-				})
 			}
 		}
 	}
