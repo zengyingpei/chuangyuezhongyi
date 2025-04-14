@@ -28,7 +28,7 @@ const _sfc_main = {
         { id: 3, img: "../../static/icons/yuyue.svg", title: "我的预约" },
         { id: 4, img: "../../static/icons/messge.svg", title: "我的评价" },
         { id: 5, img: "../../static/icons/hospital.svg", title: "就诊人管理" },
-        { id: 6, img: "../../static/icons/bl.svg", title: "我的病例" },
+        { id: 6, img: "../../static/icons/bl.svg", title: "我的病历" },
         { id: 7, img: "../../static/icons/bell.svg", title: "就诊提醒" },
         { id: 8, img: "../../static/icons/record.svg", title: "就诊记录" }
       ],
@@ -65,6 +65,76 @@ const _sfc_main = {
         common_vendor.index.navigateTo({
           url: "/pages/address/address"
         });
+      } else if (item_id == 2) {
+        common_vendor.index.showToast({
+          title: "功能开发中",
+          icon: "none"
+        });
+      } else if (item_id == 3) {
+        common_vendor.index.navigateTo({
+          url: "/pages/appointment/appointments"
+        });
+      } else if (item_id == 4) {
+        common_vendor.index.showToast({
+          title: "功能开发中",
+          icon: "none"
+        });
+      } else if (item_id == 5) {
+        common_vendor.index.navigateTo({
+          url: "/pages/client/clients"
+        });
+      } else if (item_id == 6) {
+        common_vendor.index.navigateTo({
+          url: "/pages/cases/my_cases"
+        });
+      } else if (item_id == 7) {
+        common_vendor.index.showToast({
+          title: "功能开发中",
+          icon: "none"
+        });
+      } else {
+        common_vendor.index.showToast({
+          title: "功能开发中",
+          icon: "none"
+        });
+      }
+    },
+    // 添加跳转到全部订单页面的方法
+    goToAllOrders() {
+      common_vendor.index.navigateTo({
+        url: "/pages/order/orders"
+      });
+    },
+    // 添加订单页面跳转方法
+    goToOrder(item_id) {
+      switch (item_id) {
+        case 1:
+          common_vendor.index.navigateTo({
+            url: "/pages/order/nopay"
+          });
+          break;
+        case 2:
+          common_vendor.index.navigateTo({
+            url: "/pages/order/nodelivery"
+          });
+          break;
+        case 3:
+          common_vendor.index.navigateTo({
+            url: "/pages/order/noreceive"
+          });
+          break;
+        case 4:
+          common_vendor.index.showToast({
+            title: "功能开发中",
+            icon: "none"
+          });
+          break;
+        case 5:
+          common_vendor.index.showToast({
+            title: "功能开发中",
+            icon: "none"
+          });
+          break;
       }
     }
   }
@@ -81,14 +151,16 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     e: common_vendor.t($options.username)
   } : {}, {
     f: common_vendor.o((...args) => $options.goToUpdateMessage && $options.goToUpdateMessage(...args)),
-    g: common_vendor.f($data.section1, (item, k0, i0) => {
+    g: common_vendor.o((...args) => $options.goToAllOrders && $options.goToAllOrders(...args)),
+    h: common_vendor.f($data.section1, (item, k0, i0) => {
       return {
         a: item.img,
         b: common_vendor.t(item.title),
-        c: item.id
+        c: item.id,
+        d: common_vendor.o(($event) => $options.goToOrder(item.id), item.id)
       };
     }),
-    h: common_vendor.f($data.section2, (item, k0, i0) => {
+    i: common_vendor.f($data.section2, (item, k0, i0) => {
       return {
         a: item.img,
         b: common_vendor.t(item.title),
@@ -96,7 +168,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         d: common_vendor.o(($event) => $options.goToSection2(item.id), item.id)
       };
     }),
-    i: common_vendor.f($data.section3, (item, k0, i0) => {
+    j: common_vendor.f($data.section3, (item, k0, i0) => {
       return {
         a: item.img,
         b: common_vendor.t(item.title),

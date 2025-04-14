@@ -114,3 +114,14 @@
   font-style: italic;
   margin-bottom: 5rpx;
 }
+.doc_card .doc_right_info .doc_info_bom .doc_info_bom_down {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.4;
+}
