@@ -27,10 +27,10 @@
 		<view class="section_v1">
 			<view class="section_header">
 				<text class="title">我的订单</text>
-				<text class="all">查看全部订单></text>
+				<text class="all" @click="goToAllOrders">查看全部订单></text>
 			</view>
 			<view class="section_body">
-				<view class="section_body_item" v-for="item in section1" :key="item.id">
+				<view class="section_body_item" v-for="item in section1" :key="item.id" @click="goToOrder(item.id)">
 					<view class="section_body_item_img"><image class="images" :src="item.img"></image></view>
 					<view class="section_body_item_title">{{item.title}}</view>
 				</view>
@@ -135,6 +135,48 @@
 					uni.navigateTo({
 						url: '/pages/address/address'
 					})
+				}
+			},
+			// 添加跳转到全部订单页面的方法
+			goToAllOrders(){
+				uni.navigateTo({
+					url: '/pages/order/orders'
+				});
+			},
+			// 添加订单页面跳转方法
+			goToOrder(item_id){
+				switch(item_id){
+					case 1: // 待付款
+						uni.navigateTo({
+							url: '/pages/order/nopay'
+						});
+						break;
+					case 2: // 待发货
+						uni.navigateTo({
+							url: '/pages/order/nodelivery'
+						});
+						break;
+					case 3: // 待收货
+						uni.navigateTo({
+							url: '/pages/order/noreceive'
+						});
+						break;
+					case 4: // 待评价
+						// 如果有待评价页面，可以添加对应跳转
+						uni.showToast({
+							title: '功能开发中',
+							icon: 'none'
+						});
+						break;
+					case 5: // 退款/售后
+						// 如果有退款/售后页面，可以添加对应跳转
+						uni.showToast({
+							title: '功能开发中',
+							icon: 'none'
+						});
+						break;
+					default:
+						break;
 				}
 			}
 		}

@@ -163,6 +163,46 @@
 				"navigationBarTitleText" : "",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/order/nodelivery",
+			"style" : 
+			{
+				"navigationBarTitleText" : "待发货订单",
+				"enablePullDownRefresh" : true
+			}
+		},
+		{
+			"path" : "pages/order/nopay",
+			"style" : 
+			{
+				"navigationBarTitleText" : "待付款订单",
+				"enablePullDownRefresh" : true
+			}
+		},
+		{
+			"path" : "pages/order/noreceive",
+			"style" : 
+			{
+				"navigationBarTitleText" : "待收货订单",
+				"enablePullDownRefresh" : true
+			}
+		},
+		{
+			"path" : "pages/order/orders",
+			"style" : 
+			{
+				"navigationBarTitleText" : "全部订单",
+				"enablePullDownRefresh" : true
+			}
+		},
+		{
+			"path" : "pages/order/order_detail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "订单详情",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"globalStyle": {
