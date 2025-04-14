@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="logo">
-			<image src="../../static/logo.png" mode=""></image>
+			
 		</view>
 		
 	</view>

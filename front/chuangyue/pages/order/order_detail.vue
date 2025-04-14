@@ -45,7 +45,7 @@
 			</view>
 		</view>
 		
-		<!-- 收货地址
+		<!-- 收货地址展示 -->
 		<view class="address-card" v-if="addressInfo">
 			<view class="card-title">收货信息</view>
 			<view class="address-content">
@@ -58,53 +58,11 @@
 						<text class="phone">{{ addressInfo.receiverPhone }}</text>
 					</view>
 					<view class="address-detail">
-						{{ addressInfo.province }} {{ addressInfo.city }} {{ addressInfo.district }} {{ addressInfo.detailAddress }}
+						{{ addressInfo.province }} {{ addressInfo.city }} {{ addressInfo.district }} {{ addressInfo.detail }}
 					</view>
 				</view>
 			</view>
-		</view> -->
-		
-		<!-- 商品列表 -->
-		<!-- <view class="goods-card">
-			<view class="card-title">商品信息</view>
-			<view class="goods-list" v-if="orderItems.length > 0">
-				<view class="goods-item" v-for="(item, index) in orderItems" :key="index">
-					<image class="goods-image" :src="item.productImage || '/static/icons/default_product.png'" mode="aspectFill"></image>
-					<view class="goods-info">
-						<view class="goods-name">{{ item.productName }}</view>
-						<view class="goods-spec" v-if="item.productSpec">规格：{{ item.productSpec }}</view>
-						<view class="goods-price-qty">
-							<text class="goods-price">¥{{ item.price }}</text>
-							<text class="goods-qty">x{{ item.quantity }}</text>
-						</view>
-					</view>
-				</view>
-			</view>
-			<view class="empty-goods" v-else>
-				<text>暂无商品信息</text>
-			</view>
-		</view> -->
-		
-		<!-- 订单金额详情 -->
-		<!-- <view class="amount-card">
-			<view class="card-title">金额详情</view>
-			<view class="amount-item">
-				<text class="label">商品金额</text>
-				<text class="value">¥{{ orderInfo.amount }}</text>
-			</view>
-			<view class="amount-item">
-				<text class="label">运费</text>
-				<text class="value">¥0.00</text>
-			</view>
-			<view class="amount-item">
-				<text class="label">优惠</text>
-				<text class="value">-¥0.00</text>
-			</view>
-			<view class="amount-item total">
-				<text class="label">实付款</text>
-				<text class="value price">¥{{ orderInfo.amount }}</text>
-			</view>
-		</view> -->
+		</view>
 		
 		<!-- 底部操作按钮 -->
 		<view class="footer-actions">
@@ -148,6 +106,7 @@
 			if (options.addressInfo) {
 				try {
 					this.addressInfo = JSON.parse(decodeURIComponent(options.addressInfo));
+					console.log('接收到的地址信息:', this.addressInfo);
 				} catch (e) {
 					console.error('解析地址信息失败:', e);
 				}

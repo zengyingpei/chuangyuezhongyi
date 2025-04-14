@@ -1,6 +1,7 @@
 package com.zyp.controller.user;
 
 import com.zyp.dto.ClientDTO;
+import com.zyp.dto.IdDTO;
 import com.zyp.pojo.Result;
 import com.zyp.service.ClientService;
 import com.zyp.vo.ClientVO;
@@ -28,8 +29,8 @@ public class ClientController {
     }
 
     @PostMapping("/delete")
-    public Result delete(@RequestParam Long id){
-        clientService.delete(id);
+    public Result delete(@RequestBody IdDTO idDTO){
+        clientService.delete(idDTO.getId());
         return Result.success();
     }
 }

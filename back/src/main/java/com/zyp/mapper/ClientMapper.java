@@ -18,4 +18,16 @@ public interface ClientMapper {
 
     @Delete("delete from client where id = #{id} and user_id = #{userId}")
     void delete(Long id, Long userId);
+
+    @Select("select * from client where id = #{id}")
+    Client selectById(Long id);
+
+    /**
+     * @ description 根据用户id查询对应的clientid
+     * @param userId
+     * @ return java.util.List<java.lang.Long>
+     * @ author DELL
+     */
+    @Select("select id from client where user_id = #{userId}")
+    List<Long> selectClientIdByUserId(Long userId);
 }

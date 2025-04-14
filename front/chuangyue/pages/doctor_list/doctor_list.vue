@@ -27,7 +27,7 @@
 				</view>
 				<view class="doc_info_bom">
 					<view class="doc_info_bom_up">{{item.workplace}}</view>
-					<view class="doc_info_bom_down">{{item.desc}}</view>
+					<view class="doc_info_bom_down ellipsis-2">{{item.desc}}</view>
 				</view>
 			</view>
 		</view>
@@ -213,6 +213,18 @@
 					font-size: 28rpx;
 					font-style: italic;
 					margin-bottom: 5rpx;
+				}
+				.doc_info_bom_down{
+					// 添加多行文本溢出省略效果
+					display: -webkit-box;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 2; // 限制为两行
+					overflow: hidden;
+					text-overflow: ellipsis;
+					word-break: break-all;
+					font-size: 26rpx;
+					color: #666;
+					line-height: 1.4;
 				}
 			}
 		}

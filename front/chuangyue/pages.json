@@ -203,6 +203,34 @@
 				"navigationBarTitleText" : "订单详情",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path": "pages/appointment/appointments",
+			"style": {
+				"navigationBarTitleText": "我的预约",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/client/clients",
+			"style": {
+				"navigationBarTitleText": "就诊人管理",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/cases/my_cases",
+			"style": {
+				"navigationBarTitleText": "我的病历",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/cases/case_detail",
+			"style": {
+				"navigationBarTitleText": "病历详情",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {

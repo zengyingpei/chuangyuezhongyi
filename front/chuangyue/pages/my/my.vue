@@ -97,7 +97,7 @@
 					{id:3, img:'../../static/icons/yuyue.svg', title:'我的预约'},
 					{id:4, img:'../../static/icons/messge.svg', title:'我的评价'},
 					{id:5, img:'../../static/icons/hospital.svg', title:'就诊人管理'},
-					{id:6, img:'../../static/icons/bl.svg', title:'我的病例'},
+					{id:6, img:'../../static/icons/bl.svg', title:'我的病历'},
 					{id:7, img:'../../static/icons/bell.svg', title:'就诊提醒'},
 					{id:8, img:'../../static/icons/record.svg', title:'就诊记录'}
 				],
@@ -135,6 +135,38 @@
 					uni.navigateTo({
 						url: '/pages/address/address'
 					})
+				} else if(item_id == 2){
+					uni.showToast({
+						title: '功能开发中',
+						icon: 'none'
+					});
+				}else if(item_id == 3) { // 我的预约
+					uni.navigateTo({
+						url: '/pages/appointment/appointments'
+					})
+				} else if(item_id == 4){
+					uni.showToast({
+						title: '功能开发中',
+						icon: 'none'
+					});
+				}else if(item_id == 5) { // 就诊人管理
+					uni.navigateTo({
+						url: '/pages/client/clients'
+					})
+				} else if(item_id == 6) { // 我的病历
+					uni.navigateTo({
+						url: '/pages/cases/my_cases'
+					})
+				}else if(item_id == 7){
+					uni.showToast({
+						title: '功能开发中',
+						icon: 'none'
+					});
+				}else{
+					uni.showToast({
+						title: '功能开发中',
+						icon: 'none'
+					});
 				}
 			},
 			// 添加跳转到全部订单页面的方法

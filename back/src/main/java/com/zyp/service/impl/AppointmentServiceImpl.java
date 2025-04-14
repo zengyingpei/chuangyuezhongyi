@@ -109,7 +109,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             if (appointment.getStatus() == 0) {
                 appointmentVO.setStatus("未付款");
             } else if (appointment.getStatus() == 1) {
-                appointmentVO.setStatus("预约成功，待就诊");
+                appointmentVO.setStatus("待就诊");
             } else if (appointment.getStatus() == 2) {
                 appointmentVO.setStatus("已完成");
             } else {

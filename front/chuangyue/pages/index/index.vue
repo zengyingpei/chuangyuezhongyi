@@ -142,7 +142,7 @@
 				
 				<view class="consult_card_right">
 					<view class="consult_card_right_img">
-						<image class="consult_images" :src="item.img_url" mode=""></image>
+						<image class="consult_images" :src="item.image" mode=""></image>
 					</view>
 				</view>
 			</view>
@@ -168,23 +168,23 @@
 				arr2:null,
 				list1:[
 					{id:1, name:"失眠"},
-					{id:2, name:"月经不调"},
+					{id:2, name:"小儿糖尿病"},
 					{id:3, name:"痘痘"},
-					{id:4, name:"早些"},
-					{id:5, name:"客户尽快"},
-					{id:6, name:"3为"},
-					{id:7, name:"阿三大王"},
-					{id:8, name:"撒旦撒"},
+					{id:4, name:"前列腺炎"},
+					{id:5, name:"激素失调"},
+					{id:6, name:"癫痫"},
+					{id:7, name:"月经不调"},
+					{id:8, name:"腹泻"},
 				],
 				list2:[
 					{id:1, name:"皮炎"},
 					{id:2, name:"荨麻疹"},
 					{id:3, name:"偏头痛"},
-					{id:4, name:"dd"},
-					{id:5, name:"ee"},
-					{id:6, name:"ff"},
-					{id:7, name:"gg"},
-					{id:8, name:"hh"},
+					{id:4, name:"生长迟缓"},
+					{id:5, name:"红斑狼疮"},
+					{id:6, name:"日光性角化病"},
+					{id:7, name:"天疱疮"},
+					{id:8, name:"甲沟炎"},
 				],
 				// consults:[
 				// 	{id:1, title:"晨起后的黄金时间别浪费，改掉4个坏习惯，更能健康长寿",from:"每日健康",img_url:"../../static/imgs/women.jpg"},

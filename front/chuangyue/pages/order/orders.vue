@@ -138,28 +138,70 @@
 				// 将订单对象转为 JSON 字符串并编码
 				const orderInfo = encodeURIComponent(JSON.stringify(order));
 				
-				// 如果有地址信息和订单商品信息，也需要传递
-				// 这里假设我们已经有了这些信息，实际使用时可能需要额外获取
-				const addressInfo = encodeURIComponent(JSON.stringify({
-					receiverName: '收货人姓名',
-					receiverPhone: '收货人电话',
-					province: '省份',
-					city: '城市',
-					district: '区县',
-					detailAddress: '详细地址'
-				}));
+				// 获取地址信息
+				let token = uni.getStorageSync('authorization');
+				uni.showLoading({
+					title: '加载中...'
+				});
 				
-				const orderItems = encodeURIComponent(JSON.stringify([
-					{
-						productName: '商品名称',
-						productImage: '/static/icons/default_product.png',
-						price: order.amount,
-						quantity: 1
+				uni.request({
+					url: `${baseUrl}/api/user/address/one`,
+					method: 'GET',
+					header: {
+						'authorization': token
+					},
+					data: {
+						id: order.addressId
+					},
+					success: (res) => {
+						uni.hideLoading();
+						
+						if (res.data.code === 1 && res.data.data) {
+							// 获取地址信息成功
+							const addressInfo = encodeURIComponent(JSON.stringify(res.data.data));
+							
+							// 这里可以根据实际情况获取订单商品信息
+							// 目前使用模拟数据
+							const orderItems = encodeURIComponent(JSON.stringify([
+								{
+									productName: '商品名称',
+									productImage: '/static/icons/default_product.png',
+									price: order.amount,
+									quantity: 1
+								}
+							]));
+							
+							// 导航到订单详情页
+							uni.navigateTo({
+								url: `/pages/order/order_detail?orderInfo=${orderInfo}&addressInfo=${addressInfo}&orderItems=${orderItems}`
+							});
+						} else {
+							// 获取地址信息失败
+							uni.showToast({
+								title: '获取地址信息失败',
+								icon: 'none',
+								duration: 2000
+							});
+							
+							// 仍然导航到订单详情页，但不传递地址信息
+							uni.navigateTo({
+								url: `/pages/order/order_detail?orderInfo=${orderInfo}`
+							});
+						}
+					},
+					fail: (err) => {
+						uni.hideLoading();
+						uni.showToast({
+							title: '网络请求失败',
+							icon: 'none',
+							duration: 2000
+						});
+						
+						// 仍然导航到订单详情页，但不传递地址信息
+						uni.navigateTo({
+							url: `/pages/order/order_detail?orderInfo=${orderInfo}`
+						});
 					}
-				]));
-				
-				uni.navigateTo({
-					url: `/pages/order/order_detail?orderInfo=${orderInfo}&addressInfo=${addressInfo}&orderItems=${orderItems}`
 				});
 			},
 			
