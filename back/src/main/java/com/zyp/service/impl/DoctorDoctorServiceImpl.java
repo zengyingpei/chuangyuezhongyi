@@ -33,10 +33,11 @@ public class DoctorDoctorServiceImpl implements DoctorDoctorService {
      * @ author DELL
      */
     public Doctor login(DoctorLoginDto doctorLoginDto) {
-        String name = doctorLoginDto.getName();
+        String phone = doctorLoginDto.getPhone();
         String password = doctorLoginDto.getPassword();
 
-        Doctor doctor = doctorMapper.selectByName(name);
+//        Doctor doctor = doctorMapper.selectByName(name);
+        Doctor doctor = doctorMapper.selectByPhone(phone);
 
         // 账号是否存在
         if(doctor==null){

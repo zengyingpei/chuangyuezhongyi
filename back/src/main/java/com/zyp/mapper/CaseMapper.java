@@ -1,6 +1,7 @@
 package com.zyp.mapper;
 
 import com.zyp.pojo.Case;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -25,4 +26,7 @@ public interface CaseMapper {
      */
     @Select("select * from `case` where client_id = #{clientId}")
     List<Case> selectByClientId(Long clientId);
+
+    @Insert("insert into `case` (client_id, doctor_id, visit_date, symptoms, diagnosis, treatment) VALUE (#{clientId}, #{doctorId},#{visitDate},#{symptoms},#{diagnosis},#{treatment})")
+    void createCase(Case c);
 }

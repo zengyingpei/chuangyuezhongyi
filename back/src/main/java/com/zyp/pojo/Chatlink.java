@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class Chatlink implements Serializable {
     private Long id;
     private Long userId;
+    private Long clientId;
     private Long doctorId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;

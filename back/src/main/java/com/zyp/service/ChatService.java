@@ -1,6 +1,7 @@
 package com.zyp.service;
 
 import com.zyp.dto.ChatContentDto;
+import com.zyp.dto.ChatLinkDto;
 import com.zyp.pojo.ChatContent;
 import com.zyp.pojo.Chatlink;
 import com.zyp.vo.ChatContentVo;
@@ -40,9 +41,9 @@ public interface ChatService {
 
     /**
      * @ description 创建新的聊天
-     * @param doctorId
+     * @param chatLinkDto
      * @ return void
      * @ author DELL
      */
-    Long addNew(Long doctorId);
+    Long addNew(ChatLinkDto chatLinkDto);
 }

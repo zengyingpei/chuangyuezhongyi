@@ -51,8 +51,7 @@ public class ChatUserController {
      */
     @PostMapping("/new")
     public Result addNew(@RequestBody ChatLinkDto chatLinkDto){
-        Long doctorId = chatLinkDto.getDoctorId();
-        Long chatLinkId = chatService.addNew(doctorId);
+        Long chatLinkId = chatService.addNew(chatLinkDto);
         return Result.success(chatLinkId);
     }
 

@@ -4,7 +4,7 @@
       <div class="col-3">
         <form @submit.prevent="login">
           <div class="mb-3">
-            <label for="username" class="form-lable">用户名</label>
+            <label for="username" class="form-lable">账号</label>
             <input
               v-model="name"
               type="text"
@@ -70,7 +70,7 @@ export default {
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify({
-          name: name.value,
+          phone: name.value,
           password: password.value,
         }),
         success: (res) => {

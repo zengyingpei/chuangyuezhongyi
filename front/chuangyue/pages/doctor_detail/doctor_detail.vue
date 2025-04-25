@@ -57,7 +57,7 @@
 					</view>
 				</view>
 				<view class="item_right">
-					<view class="right_button" @click="goToQuery()">
+					<view class="right_button" @click="showClientSelector()">
 						去问诊
 					</view>
 				</view>
@@ -84,6 +84,44 @@
 			</view>
 		</view>
 		
+		<!-- 添加就诊人选择弹窗 -->
+		<uni-popup ref="clientPopup" type="center">
+			<view class="client-popup">
+				<view class="popup-title">选择就诊人</view>
+				
+				<!-- 就诊人为空时显示 -->
+				<view class="empty-container" v-if="clients.length === 0">
+					<text class="empty-text">暂无就诊人信息</text>
+					<view class="empty-action">
+						<text @click="navigateToAddClient">去添加就诊人</text>
+					</view>
+				</view>
+				
+				<!-- 就诊人列表 -->
+				<view class="client-list" v-else>
+					<view 
+						class="client-item" 
+						v-for="(item, index) in clients" 
+						:key="item.id"
+						:class="{ 'selected': selectedClientId === item.id }"
+						@click="selectClient(item.id)"
+					>
+						<view class="client-info">
+							<text class="client-name">{{item.name}}</text>
+							<text class="client-gender-age">{{item.gender}} · {{item.age}}岁</text>
+						</view>
+						<view class="client-select" v-if="selectedClientId === item.id">
+							<uni-icons type="checkmarkempty" size="20" color="#7ca0ec"></uni-icons>
+						</view>
+					</view>
+				</view>
+				
+				<view class="popup-actions">
+					<button class="cancel-btn" @click="hideClientSelector">取消</button>
+					<button class="confirm-btn" @click="goToQuery" :disabled="!selectedClientId">确认问诊</button>
+				</view>
+			</view>
+		</uni-popup>
 		
 	</view>
 </template>
@@ -94,7 +132,9 @@
 		data() {
 			return {
 				doctorId:null,		//接收上一个页面传过来的医生id
-				doctorDetail : null	//接收从后端获取的医生所有信息
+				doctorDetail : null,	//接收从后端获取的医生所有信息
+				clients: [],        // 存储所有就诊人数据
+				selectedClientId: null // 选中的就诊人ID
 			};
 		},
 		onLoad(option){
@@ -132,38 +172,125 @@
 					url:`../registration/registration?docId=${this.doctorId}`
 				})
 			},
-			goToQuery(){
-				console.log("问诊");
-				let token=uni.getStorageSync('authorization');
-				// 跳转之前创建一个新的聊天关系
+			
+			// 显示就诊人选择弹窗
+			showClientSelector() {
+				// 获取就诊人列表
+				this.getClientList();
+				// 打开弹窗
+				this.$refs.clientPopup.open();
+			},
+			
+			// 隐藏就诊人选择弹窗
+			hideClientSelector() {
+				this.$refs.clientPopup.close();
+				// 重置选中状态
+				this.selectedClientId = null;
+			},
+			
+			// 选择就诊人
+			selectClient(clientId) {
+				this.selectedClientId = clientId;
+			},
+			
+			// 获取就诊人列表
+			getClientList() {
+				let token = uni.getStorageSync('authorization');
+				uni.showLoading({
+					title: '加载中...'
+				});
+				
 				uni.request({
-					url: `${baseUrl}/api/user/chat/new`,
-					method:"POST",
-					data:{
-						doctorId : this.doctorId
-					},
-					header:{
-						'authorization' : token,
+					url: `${baseUrl}/api/user/client/all`,
+					method: 'GET',
+					header: {
+						'authorization': token
 					},
 					success: (res) => {
-						if(res.data.code == 1){
+						uni.hideLoading();
+						if (res.data.code === 1) {
+							this.clients = res.data.data;
+						} else {
+							uni.showToast({
+								title: res.data.message || '获取就诊人失败',
+								icon: 'none',
+								duration: 2000
+							});
+						}
+					},
+					fail: (err) => {
+						uni.hideLoading();
+						uni.showToast({
+							title: '网络请求失败',
+							icon: 'none',
+							duration: 2000
+						});
+					}
+				});
+			},
+			
+			// 跳转到添加就诊人页面
+			navigateToAddClient() {
+				this.hideClientSelector();
+				uni.navigateTo({
+					url: '/pages/client/clients'
+				});
+			},
+			
+			// 创建聊天并跳转到聊天页面
+			goToQuery() {
+				if (!this.selectedClientId) {
+					uni.showToast({
+						title: '请选择就诊人',
+						icon: 'none'
+					});
+					return;
+				}
+				
+				let token = uni.getStorageSync('authorization');
+				uni.showLoading({
+					title: '正在创建问诊...'
+				});
+				
+				// 创建一个新的聊天关系
+				uni.request({
+					url: `${baseUrl}/api/user/chat/new`,
+					method: "POST",
+					data: {
+						doctorId: this.doctorId,
+						clientId: this.selectedClientId
+					},
+					header: {
+						'authorization': token,
+					},
+					success: (res) => {
+						uni.hideLoading();
+						if (res.data.code == 1) {
 							let chatLinkId = res.data.data;
 							console.log(chatLinkId);
+							// 关闭弹窗
+							this.hideClientSelector();
+							// 跳转到聊天页面
 							uni.navigateTo({
 								url: `/pages/message/chat?linkId=${chatLinkId}&doctorId=${this.doctorId}`
-							})
-						}else{
+							});
+						} else {
 							uni.showToast({
-								duration:1000,
-								title:"数据加载失败",
-								icon:'error'
-							})
+								duration: 1000,
+								title: res.data.message || "创建问诊失败",
+								icon: 'error'
+							});
 						}
+					},
+					fail: () => {
+						uni.hideLoading();
+						uni.showToast({
+							duration: 1000,
+							title: "网络请求失败",
+							icon: 'error'
+						});
 					}
-				})
-				
-				
-				
+				});
 			}
 		}
 	}
@@ -360,4 +487,126 @@
 			}
 		}
 	}
+	.client-popup {
+	width: 650rpx;
+	background-color: #fff;
+	border-radius: 20rpx;
+	padding: 30rpx;
+	box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.2);
+	border: 1rpx solid #e0e0e0;
+	
+	.popup-title {
+		font-size: 36rpx;
+		font-weight: bold;
+		text-align: center;
+		margin-bottom: 30rpx;
+		color: #333;
+		border-bottom: 1px solid #f0f0f0;
+		padding-bottom: 20rpx;
+	}
+	
+	.empty-container {
+		padding: 40rpx 0;
+		text-align: center;
+		background-color: #f9f9f9;
+		border-radius: 10rpx;
+		margin-bottom: 20rpx;
+		
+		.empty-text {
+			font-size: 30rpx;
+			color: #999;
+			margin-bottom: 20rpx;
+			display: block;
+		}
+		
+		.empty-action {
+			text {
+				color: #7ca0ec;
+				font-size: 30rpx;
+				padding: 10rpx 20rpx;
+				background-color: #f0f7ff;
+				border-radius: 30rpx;
+			}
+		}
+	}
+	
+	.client-list {
+		max-height: 600rpx;
+		overflow-y: auto;
+		margin-bottom: 20rpx;
+		border: 1rpx solid #f0f0f0;
+		border-radius: 10rpx;
+		
+		.client-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 20rpx;
+			border-bottom: 1px solid #f0f0f0;
+			background-color: #ffffff;
+			
+			&.selected {
+				background-color: #f0f7ff;
+				border-left: 4rpx solid #7ca0ec;
+			}
+			
+			.client-info {
+				.client-name {
+					font-size: 32rpx;
+					font-weight: bold;
+					color: #333;
+					margin-right: 20rpx;
+				}
+				
+				.client-gender-age {
+					font-size: 28rpx;
+					color: #666;
+					background-color: #f5f5f5;
+					padding: 4rpx 12rpx;
+					border-radius: 20rpx;
+				}
+			}
+			
+			.client-select {
+				width: 40rpx;
+				height: 40rpx;
+				background-color: #e6efff;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+	}
+	
+	.popup-actions {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 30rpx;
+		
+		button {
+			width: 45%;
+			height: 80rpx;
+			line-height: 80rpx;
+			text-align: center;
+			border-radius: 40rpx;
+			font-size: 30rpx;
+			
+			&.cancel-btn {
+				background-color: #f5f5f5;
+				color: #666;
+				border: 1rpx solid #e0e0e0;
+			}
+			
+			&.confirm-btn {
+				background-color: #7ca0ec;
+				color: #fff;
+				
+				&:disabled {
+					background-color: #cccccc;
+				}
+			}
+		}
+	}
+}
 </style>

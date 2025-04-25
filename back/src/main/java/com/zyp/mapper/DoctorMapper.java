@@ -123,6 +123,15 @@ public interface DoctorMapper {
     Doctor selectByName(String name);
 
     /**
+     * @ description 根据医生的电话查询
+     * @param phone
+     * @ return com.zyp.pojo.Doctor
+     * @ author DELL
+     */
+    @Select("select * from doctor where phone = #{phone}")
+    Doctor selectByPhone(String phone);
+
+    /**
      * @ description 修改密码
      * @param id
      * @param password

@@ -59,8 +59,11 @@ public interface ChatMapper {
      * @ return void
      * @ author DELL
      */
-    @Insert("insert into chatlink (user_id, doctor_id, create_time) values " +
-            "(#{userId} , #{doctorId} , #{createTime})")
+    @Insert("insert into chatlink (user_id, client_id, doctor_id, create_time) values " +
+            "(#{userId} ,#{clientId}, #{doctorId} , #{createTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void addNew(Chatlink chatlink);
+
+    @Select("select * from chatlink where id = #{linkId}")
+    Chatlink selectByLinkId(Long linkId);
 }

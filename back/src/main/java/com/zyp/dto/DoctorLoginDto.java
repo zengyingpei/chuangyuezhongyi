@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 @Data
 public class DoctorLoginDto  implements Serializable {
-    private String name;
+//    private String name;
+    private String phone;
     private String password;
 }

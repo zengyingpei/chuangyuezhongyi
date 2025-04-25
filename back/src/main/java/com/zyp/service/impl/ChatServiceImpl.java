@@ -1,6 +1,7 @@
 package com.zyp.service.impl;
 
 import com.zyp.dto.ChatContentDto;
+import com.zyp.dto.ChatLinkDto;
 import com.zyp.mapper.ChatMapper;
 import com.zyp.mapper.DoctorMapper;
 import com.zyp.mapper.UserMapper;
@@ -129,16 +130,19 @@ public class ChatServiceImpl implements ChatService {
 
     /**
      * @ description 创建新的聊天
-     * @param doctorId
+     * @param chatLinkDto
      * @ return void
      * @ author DELL
      */
-    public Long addNew(Long doctorId) {
+    public Long addNew(ChatLinkDto chatLinkDto) {
 
+        long doctorId = chatLinkDto.getDoctorId();
+        long clientId = chatLinkDto.getClientId();
         Long chatLinkId = chatMapper.selectIdByUserIdAndDoctorId(ThreadLocalUtil.get(), doctorId);
         if(chatLinkId==null){
             Chatlink chatlink = Chatlink.builder()
                     .userId(ThreadLocalUtil.get())
+                    .clientId(clientId)
                     .doctorId(doctorId)
                     .createTime(LocalDateTime.now())
                     .build();

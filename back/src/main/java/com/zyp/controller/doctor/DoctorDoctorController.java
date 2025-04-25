@@ -54,6 +54,7 @@ public class DoctorDoctorController {
                 claims
         );
 
+        log.info("tokens是 {}" , token);
         // 封装前端数据
         DoctorLoginVo doctorLoginVo = DoctorLoginVo.builder()
                 .id(doctor.getId())

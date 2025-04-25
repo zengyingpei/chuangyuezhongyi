@@ -1,11 +1,9 @@
 package com.zyp.service.impl;
 
-import com.zyp.mapper.CaseMapper;
-import com.zyp.mapper.ClientMapper;
-import com.zyp.mapper.DoctorMapper;
-import com.zyp.pojo.Case;
-import com.zyp.pojo.Client;
-import com.zyp.pojo.Doctor;
+import com.zyp.dto.CreateCaseDTO;
+import com.zyp.dto.IdDTO;
+import com.zyp.mapper.*;
+import com.zyp.pojo.*;
 import com.zyp.service.CaseService;
 import com.zyp.utils.ThreadLocalUtil;
 import com.zyp.vo.CaseVO;
@@ -13,6 +11,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +24,10 @@ public class CaseServiceImpl implements CaseService {
     private ClientMapper clientMapper;
     @Autowired
     private DoctorMapper doctorMapper;
+    @Autowired
+    private  ChatMapper chatMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public List<CaseVO> selectCaseById() {
@@ -47,5 +51,45 @@ public class CaseServiceImpl implements CaseService {
             }
         }
         return ans;
+    }
+
+//    public List<CaseVO> selectCaseById(){
+//        Long userId = ThreadLocalUtil.get();
+//        List<Case> cases = caseMapper.selectByClientId(userId);
+//        List<CaseVO> ans = new ArrayList<>();
+//
+//        for (Case c : cases) {
+//            CaseVO caseVO = new CaseVO();
+//            BeanUtils.copyProperties(c , caseVO);
+//            Doctor doctor = doctorMapper.selectById(c.getDoctorId());
+//            doctor.setPassword(null);
+//            doctor.setCard(null);
+//            caseVO.setDoctor(doctor);
+//        }
+//
+//    }
+
+    /**
+     * @ description 给问诊用户生成电子病历
+     * @param caseDTO
+     * @ return void
+     * @ author DELL
+     */
+    public void createCase(CreateCaseDTO caseDTO){
+
+        Chatlink chatlink = chatMapper.selectByLinkId(caseDTO.getLinkId());
+
+        long clientId = chatlink.getClientId();
+        Long userId = chatlink.getUserId();
+        Case c = Case.builder()
+                .clientId(clientId)
+                .doctorId(ThreadLocalUtil.get())
+                .visitDate(LocalDate.now())
+                .symptoms(caseDTO.getSymptoms())
+                .diagnosis(caseDTO.getDiagnosis())
+                .treatment(caseDTO.getTreatment())
+                .build();
+
+        caseMapper.createCase(c);
     }
 }

@@ -14,12 +14,12 @@
 					修改账号信息
 				</view>
 			</view>
-			<view class="info_down">
+			<!-- <view class="info_down">
 				<view class="info_down_content">
 					<view class="content_text">VIP 创悦会员</view>
 					<view class="open">立即开通</view>
 				</view>
-			</view>
+			</view> -->
 			
 			
 		</view>

@@ -7,7 +7,7 @@
 		
 		<view class="box" v-for="(item, index) in lists" :key="item.id" @click="toChat(item.id, item.doctorId)">
 			<view class="photo">
-				<image src="../../static/logo.png" class="img"></image>
+				<image :src="item.doctorAvatar" class="img"></image>
 			</view>
 			<view class="name">
 				{{item.doctorName}}

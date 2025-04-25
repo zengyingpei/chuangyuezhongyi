@@ -46,6 +46,9 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public List<Doctor> selectSelectedDoctor() {
         List<Doctor> list=doctorMapper.selectSelectedDoctor();
+        for (Doctor doctor : list) {
+            doctor.setPassword(null);
+        }
         return list;
     }
 
