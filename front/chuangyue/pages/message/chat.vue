@@ -2,6 +2,31 @@
 	<view>
 		<view class="chat">
 			<view class="chat_content">
+				<!-- 问诊结束时显示电子病历卡片 -->
+				<view class="case-card" v-if="state == 1 && caseData">
+					<view class="case-card-header">
+						<uni-icons type="info-filled" size="20" color="#7ca0ec"></uni-icons>
+						<text class="card-title">医生已为您生成电子病历</text>
+					</view>
+					<view class="case-card-content">
+						<view class="case-info-item">
+							<text class="label">患者姓名:</text>
+							<text class="value">{{caseData.client.name}}</text>
+						</view>
+						<view class="case-info-item">
+							<text class="label">诊断结果:</text>
+							<text class="value diagnosis">{{caseData.diagnosis}}</text>
+						</view>
+						<view class="case-info-item">
+							<text class="label">就诊日期:</text>
+							<text class="value">{{caseData.visitDate}}</text>
+						</view>
+					</view>
+					<view class="case-card-footer">
+						<button class="view-case-btn" @click="viewCaseDetail">查看完整病历</button>
+					</view>
+				</view>
+				
 				<view class="chat_item" v-for="(item, index) in contents" :key="index">
 					<view class="chat_item_time_left" v-if="item.sender == doctorId">
 						{{item.time}}
@@ -22,19 +47,22 @@
 							{{item.content}}
 						</view>
 					</view>
-					
-					
-					
-					
 				</view>
 			</view>
-			<view class="chat_op">
+			
+			<!-- 问诊已结束时禁用输入框 -->
+			<view class="chat_op" v-if="state != 1">
 				<view class="chat_input">
 					<input class="input" type="text" v-model="input_msg" @input="onWrite"/>
 				</view>
 				<view class="chat_button" @click="send">
 					发送
 				</view>
+			</view>
+			
+			<!-- 问诊已结束时显示提示 -->
+			<view class="chat_ended" v-else>
+				<text>此次问诊已结束，无法继续发送消息</text>
 			</view>
 		</view>
 	</view>
@@ -50,10 +78,12 @@
 			return {
 				linkId: null, 	// 存储当前聊天的id
 				doctorId: null,	// 存储医生的id
+				state: null,    // 存储当前问诊关系的状态
 				input_msg: "",	// 输入框的内容	
 				contents:[],	// 聊天数据
 				websocket:null,	// ws服务
-				time:''			// 当前时间
+				time:'',		// 当前时间
+				caseData: null  // 电子病历数据
 			};
 		},
 				
@@ -61,25 +91,27 @@
 		onLoad(option){
 			this.linkId = option.linkId;
 			this.doctorId = option.doctorId;
+			this.state = option.state;
 			this.getHistory(option.linkId);
-			this.initWebSocket();
+			
+			// 如果问诊已结束，获取电子病历数据
+			if(this.state == 1) {
+				this.getCaseData(option.linkId);
+			} else {
+				this.initWebSocket();
+			}
 		},
 		
 		
 		onUnload(){
-			uni.closeSocket({
-				success: () => {
-					console.log("连接关闭");
-				}
-			})		
+			if(this.websocket) {
+				uni.closeSocket({
+					success: () => {
+						console.log("连接关闭");
+					}
+				});
+			}
 		},
-		
-		// onShow(option){
-		// 	this.linkId = option.linkId;
-		// 	this.doctorId = option.doctorId;
-		// 	this.getHistory(option.linkId);
-		// },
-		
 		
 		methods:{
 			// 获取历史聊天记录
@@ -108,6 +140,57 @@
 						}	
 					}
 				})
+			},
+			
+			// 获取电子病历数据
+			getCaseData(chatLinkId) {
+				let token = uni.getStorageSync('authorization');
+				uni.showLoading({
+					title: '加载病历数据...'
+				});
+				
+				uni.request({
+					url: `${baseUrl}/api/user/case/chatlink`,
+					method: 'GET',
+					header: {
+						'authorization': token
+					},
+					data: {
+						chatLinkId: chatLinkId
+					},
+					success: (res) => {
+						uni.hideLoading();
+						if(res.data.code == 1) {
+							console.log('病历数据:', res.data.data);
+							this.caseData = res.data.data;
+						} else {
+							uni.showToast({
+								title: '获取病历失败',
+								icon: 'none',
+								duration: 2000
+							});
+						}
+					},
+					fail: () => {
+						uni.hideLoading();
+						uni.showToast({
+							title: '网络请求失败',
+							icon: 'none',
+							duration: 2000
+						});
+					}
+				});
+			},
+			
+			// 查看病历详情
+			viewCaseDetail() {
+				if(!this.caseData) return;
+				
+				// 将病历数据编码后传递给病历详情页
+				const caseDataStr = encodeURIComponent(JSON.stringify(this.caseData));
+				uni.navigateTo({
+					url: `/pages/cases/case_detail?caseData=${caseDataStr}`
+				});
 			},
 			
 			// 更新输入框的内容
@@ -228,9 +311,79 @@
 <style lang="scss" scoped>
 	.chat{
 		.chat_content{
-			height: 1300rpx;
-			overflow: auto;
+			height: calc(100vh - 100rpx);
+			overflow-y: auto;
+			padding-bottom: 120rpx;
+			box-sizing: border-box;
 			// background-color: rebeccapurple;
+			
+			// 电子病历卡片样式
+			.case-card {
+				width: 690rpx;
+				margin: 20rpx auto;
+				background-color: #f8f9fe;
+				border-radius: 16rpx;
+				box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+				overflow: hidden;
+				border: 1rpx solid #e0e7ff;
+				
+				.case-card-header {
+					background-color: #e6efff;
+					padding: 20rpx;
+					display: flex;
+					align-items: center;
+					
+					.card-title {
+						font-size: 30rpx;
+						font-weight: bold;
+						color: #333;
+						margin-left: 10rpx;
+					}
+				}
+				
+				.case-card-content {
+					padding: 20rpx;
+					
+					.case-info-item {
+						margin-bottom: 16rpx;
+						display: flex;
+						
+						.label {
+							font-size: 28rpx;
+							color: #666;
+							width: 160rpx;
+							flex-shrink: 0;
+						}
+						
+						.value {
+							font-size: 28rpx;
+							color: #333;
+							flex: 1;
+							
+							&.diagnosis {
+								color: #ff7043;
+								font-weight: 500;
+							}
+						}
+					}
+				}
+				
+				.case-card-footer {
+					padding: 0 20rpx 20rpx;
+					display: flex;
+					justify-content: flex-end;
+					
+					.view-case-btn {
+						background-color: #7ca0ec;
+						color: #fff;
+						font-size: 28rpx;
+						padding: 10rpx 30rpx;
+						border-radius: 30rpx;
+						border: none;
+						line-height: 1.5;
+					}
+				}
+			}
 			
 			.chat_item{
 				width: 690rpx;
@@ -279,35 +432,81 @@
 				}
 			}
 		}
+		
 		.chat_op{
 			height: 100rpx;
-			// background-color: #6ea3e5;
-			border-top: 1rpx solid #7d837e;
+			border-top: 1rpx solid #e0e0e0;
 			display: flex;
+			align-items: center;
+			background-color: #f9f9f9;
+			padding: 0 20rpx;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 10;
+			
 			.chat_input{
+				flex: 1;
 				box-sizing: border-box;
-				width: 500rpx;
-				margin-left: 20rpx;
-				margin-top: 20rpx;
+				margin: 10rpx 20rpx 10rpx 0;
+				
 				.input{
-					width: 500rpx;
-					border: 2rpx solid #608bae;
-					height: 50rpx;
+					width: 100%;
+					height: 70rpx;
+					border: 2rpx solid #e0e0e0;
+					border-radius: 35rpx;
+					padding: 0 30rpx;
+					font-size: 28rpx;
+					background-color: #fff;
+					box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+					transition: all 0.3s;
+					
+					&:focus {
+						border-color: #7ca0ec;
+						box-shadow: 0 2rpx 12rpx rgba(124, 160, 236, 0.2);
+					}
 				}
 			}
+			
 			.chat_button{
-				border-radius: 20rpx;
-				background-color: #6ea3e5;
-				// border: 1rpx solid #282c35;
-				width: 100rpx;
-				height: 60rpx;
+				width: 120rpx;
+				height: 70rpx;
+				background: linear-gradient(135deg, #7ca0ec, #6ea3e5);
 				color: white;
 				text-align: center;
-				line-height: 65rpx;
-				margin-left: 30rpx;
-				margin-top: 15rpx;
+				line-height: 70rpx;
+				border-radius: 35rpx;
+				font-size: 28rpx;
+				font-weight: 500;
+				box-shadow: 0 4rpx 12rpx rgba(110, 163, 229, 0.3);
+				transition: all 0.2s;
+				
+				&:active {
+					transform: scale(0.95);
+					box-shadow: 0 2rpx 6rpx rgba(110, 163, 229, 0.2);
+				}
+			}
+		}
+		
+		// 问诊结束提示样式
+		.chat_ended {
+			height: 100rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-top: 1rpx solid #e0e0e0;
+			background-color: #f5f5f5;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 10;
+			
+			text {
+				font-size: 28rpx;
+				color: #999;
 			}
 		}
 	}
-
 </style>

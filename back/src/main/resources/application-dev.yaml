@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://146.56.235.254:3306/chuangyue
+    url: jdbc:mysql://124.70.192.26:3306/chuangyue
     username: root
     password: Zypszabl
 #  data:

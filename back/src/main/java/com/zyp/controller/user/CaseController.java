@@ -1,5 +1,6 @@
 package com.zyp.controller.user;
 
+import com.zyp.dto.IdDTO;
 import com.zyp.pojo.Case;
 import com.zyp.pojo.Result;
 import com.zyp.service.CaseService;
@@ -7,6 +8,7 @@ import com.zyp.vo.CaseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -28,5 +30,11 @@ public class CaseController implements Serializable {
     public Result<List<CaseVO>> selectCaseById(){
         List<CaseVO> cases = caseService.selectCaseById();
         return Result.success(cases);
+    }
+
+    @GetMapping("/chatlink")
+    public Result<CaseVO> selectCaseByChatLinkId(@RequestParam Long chatLinkId){
+        CaseVO caseVO = caseService.selectCaseByChatLinkId(chatLinkId);
+        return Result.success(caseVO);
     }
 }

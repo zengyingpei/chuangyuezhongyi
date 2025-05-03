@@ -16,6 +16,14 @@
     <div class="main">
       <div class="chat_box">
         <div class="chat_content">
+          <div class="chat_head">
+            <div class="chat_head_title">
+              与{{  }}的聊天
+            </div>
+            <div class="functions">
+              <div class="add_case">填写病历</div>
+            </div>
+          </div>
           <div class="chat_item" v-for="item in messages" :key="item.id">
             <div class="chat_item_time_left" v-if="item.sender == select_user">
               {{ item.time }}

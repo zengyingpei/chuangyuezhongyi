@@ -145,6 +145,7 @@ public class ChatServiceImpl implements ChatService {
                     .clientId(clientId)
                     .doctorId(doctorId)
                     .createTime(LocalDateTime.now())
+                    .state(0)
                     .build();
 
             chatMapper.addNew(chatlink);

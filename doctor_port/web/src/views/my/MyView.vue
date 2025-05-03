@@ -42,6 +42,9 @@
     width: 10vw;
     background-color: antiquewhite;
 }
+.main{
+    width: 90vw;
+}
 
 .item{
     height: 7vh;

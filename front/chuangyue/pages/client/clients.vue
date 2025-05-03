@@ -24,7 +24,6 @@
 						<button class="delete-btn" @click="deleteClient(item.id)">删除</button>
 					</view>
 				</view>
-				
 				<view class="client-info">
 					<view class="info-item">
 						<text class="label">年龄：</text>

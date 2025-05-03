@@ -36,8 +36,7 @@ public class MinioUtil {
                             .build();
 
             // 如果指定的bucket不存在，则创建，否则使用已有bucket
-            boolean found =
-                    minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (!found) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
             } else {

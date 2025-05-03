@@ -5,15 +5,18 @@
 			<view class="no_message_info">暂无新消息</view>
 		</view> -->
 		
-		<view class="box" v-for="(item, index) in lists" :key="item.id" @click="toChat(item.id, item.doctorId)">
+		<view class="box" v-for="(item, index) in lists" :key="item.id" @click="toChat(item.id, item.doctorId, item.state)">
 			<view class="photo">
 				<image :src="item.doctorAvatar" class="img"></image>
 			</view>
 			<view class="name">
 				{{item.doctorName}}
 			</view>
+			<view class="status-tag" v-if="item.state == 1">
+				问诊结束
+			</view>
 			<view class="time">
-				{{item.createTime}}
+				{{item.createTime.substring(0, 10)}}
 			</view>
 		</view>
 	</view>
@@ -57,9 +60,9 @@
 			},
 			
 			// chat
-			toChat(linkId, doctorId){
+			toChat(linkId, doctorId, state){
 				uni.navigateTo({
-					url:`/pages/message/chat?linkId=${linkId}&doctorId=${doctorId}`
+					url:`/pages/message/chat?linkId=${linkId}&doctorId=${doctorId}&state=${state}`
 				})
 			}
 		}
@@ -119,12 +122,26 @@
 			line-height: 110rpx;
 			box-sizing: border-box;
 		}
+		.status-tag{
+			height: 40rpx;
+			padding: 0 15rpx;
+			background-color: #e6efff;
+			color: #7ca0ec;
+			font-size: 24rpx;
+			border-radius: 20rpx;
+			display: flex;
+			align-items: center;
+			margin-top: 35rpx;
+			margin-left: 20rpx;
+			border: 1rpx solid #d0e0ff;
+		}
 		.time{
 			font-size: 25rpx;
-			margin-left: 170rpx;
+			margin-left: auto;
+			margin-right: 20rpx;
 			line-height: 110rpx;
 			box-sizing: border-box;
+			color: #999;
 		}
-		
 	}
 </style>

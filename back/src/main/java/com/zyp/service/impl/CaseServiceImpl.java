@@ -92,4 +92,16 @@ public class CaseServiceImpl implements CaseService {
 
         caseMapper.createCase(c);
     }
+
+    @Override
+    public CaseVO selectCaseByChatLinkId(Long chatLinkId) {
+        Case c = caseMapper.selectCaseByChatLinkId(chatLinkId);
+        CaseVO caseVO = new CaseVO();
+        BeanUtils.copyProperties(c , caseVO);
+        Doctor doctor = doctorMapper.selectById(c.getDoctorId());
+        caseVO.setDoctor(doctor);
+        Client client = clientMapper.selectById(c.getClientId());
+        caseVO.setClient(client);
+        return caseVO;
+    }
 }

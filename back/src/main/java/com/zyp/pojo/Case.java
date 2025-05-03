@@ -17,6 +17,7 @@ public class Case implements Serializable {
     private Long id;
     private Long clientId;
     private Long doctorId;
+    private Long chatLinkId;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate visitDate;
     private String symptoms;

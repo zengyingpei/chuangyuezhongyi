@@ -22,7 +22,6 @@
 			</radio-group>
 		</view>
 		
-	
 		<view class="form-item">
 			<label class="form-label">身份证号</label>
 			<input class="form-input" type="text" placeholder="请输入身份证号" @change="idNumberChange" />
