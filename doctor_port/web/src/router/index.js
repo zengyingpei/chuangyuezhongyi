@@ -27,6 +27,14 @@ const routes = [
         }
       },
       {
+        path:'/reception',
+        name:'reception',
+        component: ()=> import ('../views/doctor/ReceptionView.vue'),
+        meta:{
+          requestAuth: true
+        }
+      },
+      {
         path:'/my',
         name:'my',
         component: ()=> import ('../views/my/MyView.vue'),

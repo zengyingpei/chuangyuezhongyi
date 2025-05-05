@@ -10,6 +10,7 @@ import com.zyp.vo.CaseVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -75,15 +76,13 @@ public class CaseServiceImpl implements CaseService {
      * @ return void
      * @ author DELL
      */
+    @Transactional
     public void createCase(CreateCaseDTO caseDTO){
-
         Chatlink chatlink = chatMapper.selectByLinkId(caseDTO.getLinkId());
-
-        long clientId = chatlink.getClientId();
-        Long userId = chatlink.getUserId();
         Case c = Case.builder()
-                .clientId(clientId)
+                .clientId(chatlink.getClientId())
                 .doctorId(ThreadLocalUtil.get())
+                .chatLinkId(chatlink.getId())
                 .visitDate(LocalDate.now())
                 .symptoms(caseDTO.getSymptoms())
                 .diagnosis(caseDTO.getDiagnosis())
@@ -91,6 +90,7 @@ public class CaseServiceImpl implements CaseService {
                 .build();
 
         caseMapper.createCase(c);
+        chatMapper.updateState(chatlink.getId());
     }
 
     @Override

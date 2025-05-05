@@ -22,7 +22,7 @@ public class AppointmentOfDoctorVo implements Serializable {
     //表示时间段（上午/下午）
     private String slot;
     //表示剩余可用人数
-    private Integer available;
-    //表示总人数
+    private Integer surplus;
+    //表示总人数 (弃用)
     private Integer total;
 }

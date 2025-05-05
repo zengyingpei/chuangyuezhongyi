@@ -1,21 +1,40 @@
 <template>
 	<view class="container">
 		<!-- 页面标题 -->
-		<view class="page-header">
+		<!-- <view class="page-header">
 			<text class="title">我的预约</text>
+		</view> -->
+		
+		<view class="tabs-container">
+			<view class="tabs">
+				<view 
+					class="tab-item" 
+					:class="{ active: currentTab === 0 }" 
+					@click="switchTab(0)"
+				>
+					待就诊
+				</view>
+				<view 
+					class="tab-item" 
+					:class="{ active: currentTab === 1 }" 
+					@click="switchTab(1)"
+				>
+					已完成
+				</view>
+			</view>
 		</view>
 		
 		<!-- 预约为空时显示 -->
 		<view class="empty-container" v-if="appointments.length === 0">
 			<image class="empty-image" src="/static/icons/empty_order.png" mode="aspectFit"></image>
-			<text class="empty-text">暂无预约记录</text>
+			<text class="empty-text">暂无{{ currentTab === 0 ? '待就诊' : '已完成' }}预约</text>
 		</view>
 		
 		<!-- 预约列表 -->
 		<view class="appointment-list" v-else>
-			<view class="appointment-card" v-for="(item, index) in appointments" :key="index">
+			<view class="appointment-card" v-for="(item, index) in appointments" :key="item.id">
 				<view class="doctor-info">
-					<text class="doctor-name">{{item.doctorName}}</text>
+					<text class="doctor-name">{{item.doctor.name}}</text>
 					<text class="status-tag" :class="getStatusClass(item.status)">{{item.status}}</text>
 				</view>
 				
@@ -26,13 +45,13 @@
 					</view>
 					<view class="info-item">
 						<text class="label">医生电话：</text>
-						<text class="value">{{item.doctorPhone}}</text>
+						<text class="value">{{item.doctor.phone}}</text>
 					</view>
 				</view>
 				
 				<view class="appointment-footer">
-					<button class="btn-contact" @click="callDoctor(item.doctorPhone)">联系医生</button>
-					<button class="btn-cancel" v-if="item.status === '待就诊'" @click="cancelAppointment(item)">取消预约</button>
+					<button class="btn-contact" @click="callDoctor(item.doctor.phone)">联系医生</button>
+					<button class="btn-cancel" v-if="currentTab === 0 && item.status === '待就诊'" @click="cancelAppointment(item)">取消预约</button>
 				</view>
 			</view>
 		</view>
@@ -45,28 +64,45 @@
 	export default {
 		data() {
 			return {
-				appointments: [] // 存储所有预约数据
+				appointments: [], // 存储当前选中状态的预约数据
+				currentTab: 0,    // 当前选中的Tab，0表示待就诊，1表示已完成
+				loading: false    // 加载状态
 			};
 		},
 		onLoad() {
-			this.getAllAppointments();
+			this.loadAppointments();
 		},
 		onPullDownRefresh() {
-			this.getAllAppointments();
-			setTimeout(() => {
+			this.loadAppointments(() => {
 				uni.stopPullDownRefresh();
-			}, 1000);
+			});
 		},
 		methods: {
-			// 获取所有预约数据
-			getAllAppointments() {
+			// 切换Tab
+			switchTab(index) {
+				if (this.currentTab !== index) {
+					this.currentTab = index;
+					this.loadAppointments();
+				}
+			},
+			
+			// 加载预约数据
+			loadAppointments(callback) {
+				if (this.loading) return;
+				this.loading = true;
+				
 				let token = uni.getStorageSync('authorization');
 				uni.showLoading({
 					title: '加载中...'
 				});
 				
+				// 根据当前Tab选择不同的API
+				const apiUrl = this.currentTab === 0 
+					? `${baseUrl}/api/user/appointment/nofinished` 
+					: `${baseUrl}/api/user/appointment/finished`;
+				
 				uni.request({
-					url: `${baseUrl}/api/user/appointment/all`,
+					url: apiUrl,
 					method: 'GET',
 					header: {
 						'authorization': token
@@ -74,11 +110,11 @@
 					success: (res) => {
 						uni.hideLoading();
 						if (res.data.code === 1) {
-							this.appointments = res.data.data;
-							console.log('所有预约数据:', this.appointments);
+							this.appointments = res.data.data || [];
+							console.log(`${this.currentTab === 0 ? '待就诊' : '已完成'}预约数据:`, this.appointments);
 						} else {
 							uni.showToast({
-								title: '获取预约失败',
+								title: `获取${this.currentTab === 0 ? '待就诊' : '已完成'}预约失败`,
 								icon: 'none',
 								duration: 2000
 							});
@@ -91,6 +127,12 @@
 							icon: 'none',
 							duration: 2000
 						});
+					},
+					complete: () => {
+						this.loading = false;
+						if (typeof callback === 'function') {
+							callback();
+						}
 					}
 				});
 			},
@@ -129,11 +171,48 @@
 					content: '确定要取消该预约吗？',
 					success: (res) => {
 						if (res.confirm) {
-							// 这里可以添加取消预约的API调用
-							uni.showToast({
-								title: '取消预约功能开发中',
-								icon: 'none',
-								duration: 2000
+							// 用户确认取消，发起API请求
+							let token = uni.getStorageSync('authorization');
+							uni.showLoading({
+								title: '正在取消...'
+							});
+
+							uni.request({
+								url: `${baseUrl}/api/user/appointment/cancel`,
+								method: 'POST',
+								header: {
+									'authorization': token,
+									'Content-Type': 'application/json'
+								},
+								data: {
+									id: item.id // 发送预约的ID
+								},
+								success: (apiRes) => {
+									uni.hideLoading();
+									if (apiRes.data.code === 1) {
+										uni.showToast({
+											title: '取消成功',
+											icon: 'success',
+											duration: 1500
+										});
+										// 取消成功后刷新列表
+										this.loadAppointments();
+									} else {
+										uni.showToast({
+											title: apiRes.data.message || '取消失败',
+											icon: 'none',
+											duration: 2000
+										});
+									}
+								},
+								fail: (err) => {
+									uni.hideLoading();
+									uni.showToast({
+										title: '网络错误，请重试',
+										icon: 'none',
+										duration: 2000
+									});
+								}
 							});
 						}
 					}
@@ -152,7 +231,7 @@
 	
 	.page-header {
 		padding: 30rpx 0;
-		margin-bottom: 30rpx;
+		margin-bottom: 20rpx;
 		border-bottom: 1px solid #eaeaea;
 		
 		.title {
@@ -172,6 +251,45 @@
 				height: 36rpx;
 				background-color: #7ca0ec;
 				border-radius: 4rpx;
+			}
+		}
+	}
+	
+	.tabs-container {
+		margin-bottom: 20rpx;
+		
+		.tabs {
+			display: flex;
+			background-color: #fff;
+			border-radius: 12rpx;
+			overflow: hidden;
+			box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+			
+			.tab-item {
+				flex: 1;
+				text-align: center;
+				padding: 24rpx 0;
+				font-size: 30rpx;
+				color: #666;
+				position: relative;
+				transition: all 0.3s;
+				
+				&.active {
+					color: #7ca0ec;
+					font-weight: 500;
+					
+					&::after {
+						content: '';
+						position: absolute;
+						bottom: 0;
+						left: 50%;
+						transform: translateX(-50%);
+						width: 60rpx;
+						height: 6rpx;
+						background-color: #7ca0ec;
+						border-radius: 3rpx;
+					}
+				}
 			}
 		}
 	}

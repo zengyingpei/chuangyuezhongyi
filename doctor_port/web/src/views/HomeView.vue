@@ -12,6 +12,11 @@
           设置预约时间
         </router-link>
       </div>
+      <div class="reception">
+        <router-link :class="route_name == 'reception' ? ' select ' : ' no_select'" :to="{ name: 'reception' }" style="text-decoration: none">
+          预约接诊
+        </router-link>
+      </div>
 
       <div class="avatar" @click="goToMy()">
           <div class="photo">
@@ -72,14 +77,19 @@ export default {
 }
 
 .appointment {
-  width: 20vw;
+  width: 17vw;
   height: 8vh;
   line-height: 8vh;
 }
 
+.reception{
+  width: 20vw;
+  height: 8vh;
+  line-height: 8vh;
+}
 .avatar{
   /* background-color: black; */
-  margin-left: 60vw;
+  margin-left: 40vw;
 }
 
 .photo{

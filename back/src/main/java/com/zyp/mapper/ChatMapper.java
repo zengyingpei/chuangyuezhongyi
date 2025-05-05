@@ -2,10 +2,7 @@ package com.zyp.mapper;
 
 import com.zyp.pojo.ChatContent;
 import com.zyp.pojo.Chatlink;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -66,4 +63,7 @@ public interface ChatMapper {
 
     @Select("select * from chatlink where id = #{linkId}")
     Chatlink selectByLinkId(Long linkId);
+
+    @Update("update `chatlink` set state = 1 where id = #{linkId}")
+    void updateState(Long linkId);
 }

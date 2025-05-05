@@ -11,5 +11,15 @@ public interface AppointmentService {
 
     void addAppointment(AddAppointmentDto addAppointmentDto);
 
-    List<AppointmentVO> selectAll();
+    List<AppointmentVO> selectAllNoFinished();
+
+    List<AppointmentVO> selectAllFinished();
+
+    void cancelAppointment(long id);
+
+    List<AppointmentVO> selectAllByDoctorId();
+
+    void finish(long id);
+
+    void refuse(long id, String reason);
 }
