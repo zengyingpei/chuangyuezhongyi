@@ -31,7 +31,10 @@
 					</view>
 					<view class="info-item">
 						<text class="label">支付状态：</text>
-						<text class="value">{{ item.payStatus === 1 ? '已支付' : '未支付' }}</text>
+						<text class="value">{{ 
+							item.payStatus === 1 ? '已支付' : 
+							item.payStatus === 2 ? '已取消' : '未支付' 
+						}}</text>
 					</view>
 					<view class="info-item">
 						<text class="label">配送状态：</text>
@@ -113,7 +116,9 @@
 			
 			// 获取订单状态文本
 			getStatusText(item) {
-				if (item.payStatus === 0) {
+				if (item.payStatus === 2) {
+					return '已取消';
+				} else if (item.payStatus === 0) {
 					return '待付款';
 				} else if (item.deliveryStatus === 0) {
 					return '待发货';
@@ -124,7 +129,9 @@
 			
 			// 获取订单状态样式类
 			getStatusClass(item) {
-				if (item.payStatus === 0) {
+				if (item.payStatus === 2) {
+					return 'status-canceled';
+				} else if (item.payStatus === 0) {
 					return 'status-nopay';
 				} else if (item.deliveryStatus === 0) {
 					return 'status-nodelivery';
@@ -298,6 +305,10 @@
 					
 					&.status-noreceive {
 						background-color: #4caf50;
+					}
+					
+					&.status-canceled {
+						background-color: #999999;
 					}
 				}
 			}

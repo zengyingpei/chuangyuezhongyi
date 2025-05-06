@@ -3,6 +3,7 @@ package com.zyp.mapper;
 import com.zyp.pojo.Medicine;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -32,4 +33,17 @@ public interface MedicineMapper {
      */
     @Select("select * from medicine where id = #{id}")
     Medicine selectById(Long id);
+
+    /**
+     * @ description 下单时，删减库存
+     * @param id
+     * @param number
+     * @ return void
+     * @ author DELL
+     */
+    @Update("update medicine set number = number-#{number} where id = #{id}")
+    void subtract(long id , int number);
+
+    @Update("update medicine set number = number + #{number} where id = #{id}")
+    void add(long id, int number);
 }

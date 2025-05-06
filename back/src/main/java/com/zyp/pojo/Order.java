@@ -21,7 +21,7 @@ public class Order implements Serializable {
     private Long addressId;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime orderTime;
-    // 0未支付 , 1已支付
+    // 0未支付 , 1已支付, 2超时未支付取消
     private Integer payStatus;
     // 0未发货 ， 1已发货 但未收货，2已收货
     private Integer deliveryStatus;

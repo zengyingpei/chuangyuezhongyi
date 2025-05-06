@@ -27,11 +27,19 @@
 				<text class="label">下单时间：</text>
 				<text class="value">{{ orderInfo.orderTime }}</text>
 			</view>
+			<!-- 订单信息部分需要修改支付状态显示 -->
 			<view class="info-item">
 				<text class="label">支付状态：</text>
-				<text class="value" :class="orderInfo.payStatus === 1 ? 'text-success' : 'text-warning'">
-					{{ orderInfo.payStatus === 1 ? '已支付' : '未支付' }}
+				<text class="value" :class="getPayStatusClass(orderInfo)">
+					{{ orderInfo.payStatus === 1 ? '已支付' : orderInfo.payStatus === 2 ? '已取消' : '未支付' }}
 				</text>
+			</view>
+			
+			<!-- 底部操作按钮需要根据订单状态调整显示 -->
+			<view class="footer-actions">
+				<button class="btn-action btn-contact" @click="contactService">联系客服</button>
+				<button class="btn-action btn-primary" v-if="orderInfo.payStatus === 0" @click="payOrder">立即支付</button>
+				<button class="btn-action btn-primary" v-if="orderInfo.payStatus === 1 && orderInfo.deliveryStatus === 1" @click="confirmReceive">确认收货</button>
 			</view>
 			<view class="info-item">
 				<text class="label">配送状态：</text>
@@ -126,7 +134,9 @@
 			getStatusText(order) {
 				if (!order) return '';
 				
-				if (order.payStatus === 0) {
+				if (order.payStatus === 2) {
+					return '已取消';
+				} else if (order.payStatus === 0) {
 					return '待付款';
 				} else if (order.deliveryStatus === 0) {
 					return '待发货';
@@ -139,7 +149,9 @@
 			getStatusDesc(order) {
 				if (!order) return '';
 				
-				if (order.payStatus === 0) {
+				if (order.payStatus === 2) {
+					return '订单超时未支付已自动取消';
+				} else if (order.payStatus === 0) {
 					return '请尽快完成支付';
 				} else if (order.deliveryStatus === 0) {
 					return '商家正在处理您的订单';
@@ -152,7 +164,9 @@
 			getStatusIcon(order) {
 				if (!order) return '';
 				
-				if (order.payStatus === 0) {
+				if (order.payStatus === 2) {
+					return 'icon-close-circle'; // 使用关闭图标表示取消
+				} else if (order.payStatus === 0) {
 					return 'icon-wallet';
 				} else if (order.deliveryStatus === 0) {
 					return 'icon-package';
@@ -165,12 +179,27 @@
 			getStatusClass(order) {
 				if (!order) return '';
 				
-				if (order.payStatus === 0) {
+				if (order.payStatus === 2) {
+					return 'status-canceled';
+				} else if (order.payStatus === 0) {
 					return 'status-nopay';
 				} else if (order.deliveryStatus === 0) {
 					return 'status-nodelivery';
 				} else {
 					return 'status-noreceive';
+				}
+			},
+			
+			// 新增：获取支付状态样式类
+			getPayStatusClass(order) {
+				if (!order) return '';
+				
+				if (order.payStatus === 1) {
+					return 'text-success';
+				} else if (order.payStatus === 2) {
+					return 'text-canceled';
+				} else {
+					return 'text-warning';
 				}
 			},
 			
@@ -274,6 +303,10 @@
 				background-color: #4caf50;
 			}
 			
+			&.status-canceled {
+				background-color: #999999; // 灰色背景表示取消状态
+			}
+			
 			.iconfont {
 				color: #fff;
 				font-size: 40rpx;
@@ -320,6 +353,10 @@
 			
 			&.text-warning {
 				color: #ff7043;
+			}
+			
+			&.text-canceled {
+				color: #999999; // 灰色文本表示取消状态
 			}
 			
 			&.price {

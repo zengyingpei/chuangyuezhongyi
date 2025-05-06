@@ -1,15 +1,15 @@
 package com.zyp.mapper;
 
 import com.zyp.pojo.Order;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
 public interface OrderMapper {
 
+    @Options(useGeneratedKeys = true , keyProperty = "id" , keyColumn = "id")
     @Insert("insert into `order` (order_no, user_id, address_id, order_time, pay_status, delivery_status, amount) value (#{orderNo},#{userId},#{addressId},#{orderTime},#{payStatus},#{deliveryStatus},#{amount})")
     void insert(Order order);
 
@@ -27,4 +27,10 @@ public interface OrderMapper {
 
     @Select("select * from `order` where pay_status =1 and delivery_status =2")
     List<Order> selectReceivedOrder();
+
+    @Select("select * from `order` where pay_status = 0 and order_time < #{time}")
+    List<Order> selectTimeOutOrder(LocalDateTime time);
+
+    @Update("update `order` set pay_status = #{payStatus}")
+    void updatePayStatus(int payStatus);
 }
