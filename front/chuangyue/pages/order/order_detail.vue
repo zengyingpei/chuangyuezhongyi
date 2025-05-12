@@ -76,6 +76,7 @@
 		<view class="footer-actions">
 			<button class="btn-action btn-contact" @click="contactService">联系客服</button>
 			<button class="btn-action btn-primary" v-if="orderInfo.payStatus === 0" @click="payOrder">立即支付</button>
+			<button class="btn-action btn-primary"  >取消订单</button>
 			<button class="btn-action btn-primary" v-if="orderInfo.payStatus === 1 && orderInfo.deliveryStatus === 1" @click="confirmReceive">确认收货</button>
 		</view>
 	</view>

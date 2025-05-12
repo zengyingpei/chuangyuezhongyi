@@ -55,7 +55,7 @@
 			<view class="quick_box">
 				<view class="quick_section_item_left">
 					<view class="quick_big">健康测评</view>
-					<view class="quick_small">按方开药</view>
+					<view class="quick_small">身体状况</view>
 				</view>
 				<view class="quick_section_item_right">
 					<image class="quick_images" src="../../static/icons/jk.svg" mode=""></image>
@@ -66,8 +66,8 @@
 		<view class="quick_section_item">
 			<view class="quick_box">
 				<view class="quick_section_item_left">
-					<view class="quick_big">按方开药</view>
-					<view class="quick_small">按方开药</view>
+					<view class="quick_big">方便买药</view>
+					<view class="quick_small">商城下单</view>
 				</view>
 				<view class="quick_section_item_right">
 					<image class="quick_images" src="../../static/icons/medicine.svg" mode=""></image>

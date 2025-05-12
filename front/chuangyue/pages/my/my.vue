@@ -49,7 +49,7 @@
 			</view>
 		</view>
 		
-	
+		<!--
 		<view class="section_v2">
 			<view class="section_header">
 				我的工具
@@ -61,7 +61,7 @@
 				</view>
 			</view>
 		</view>
-		
+		-->
 	</view>
 	
 </template>

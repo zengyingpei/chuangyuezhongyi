@@ -27,4 +27,6 @@ public interface DoctorDoctorService {
      * @ author DELL
      */
     String updateAvatar(MultipartFile file) throws IOException, NoSuchAlgorithmException, InvalidKeyException;
+
+    String selectAvatar();
 }

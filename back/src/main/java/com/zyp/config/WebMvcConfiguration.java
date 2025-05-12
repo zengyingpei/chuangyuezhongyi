@@ -63,7 +63,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         log.info("开始注册自定义拦截器...");
         registry.addInterceptor(userLoginInterceptor)
                 .addPathPatterns("/api/user/**")
-                .excludePathPatterns("/api/user/consults/**")
                 .excludePathPatterns("/api/user/user/login");
 
         registry.addInterceptor(adminLoginInterceptor)

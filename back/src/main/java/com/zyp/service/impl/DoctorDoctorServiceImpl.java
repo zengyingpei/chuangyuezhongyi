@@ -3,6 +3,7 @@ package com.zyp.service.impl;
 import com.zyp.dto.DoctorLoginDto;
 import com.zyp.dto.UpdatePasswordDto;
 import com.zyp.exception.AccountNotFoundException;
+import com.zyp.exception.NotFoundProperties;
 import com.zyp.exception.PasswordErrorException;
 import com.zyp.mapper.DoctorMapper;
 import com.zyp.pojo.Doctor;
@@ -76,6 +77,18 @@ public class DoctorDoctorServiceImpl implements DoctorDoctorService {
         String url = MinioUtil.upload(file, minioProperties.getEndpoint(), minioProperties.getPort(), minioProperties.getAccessKey(), minioProperties.getSecretKey(), minioProperties.getBucketName());
         Long id = ThreadLocalUtil.get();
         doctorMapper.updateAvatar(id, url);
+        return url;
+    }
+
+    public String selectAvatar(){
+        long doctorId = ThreadLocalUtil.get();
+        String url = doctorMapper.selectAvatar(doctorId);
+        if(url==null || url.isEmpty()){
+            throw new NotFoundProperties("用户未上传过头像");
+        }
+        if(url.equals("../../static/imgs/doctor.svg")){
+            url = "http://photo.chaoxing.com/photo_80.jpg";
+        }
         return url;
     }
 }

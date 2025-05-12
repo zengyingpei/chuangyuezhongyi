@@ -37,7 +37,7 @@ public interface AppointmentMapper {
     @Select("select * from appointment where user_id = #{userId} and status = 2 order by date , time_slot")
     List<Appointment> selectAllFinishedByUserId(Long userId);
 
-    @Select("select * from appointment where doctor_id = #{doctorId} and status = 1 order by date ")
+    @Select("select * from appointment where doctor_id = #{doctorId} and status = 1 and date >=now() order by date ")
     List<Appointment> selectAllByDoctorId(Long doctorId);
 
     @Select("select * from appointment where id = #{id}")

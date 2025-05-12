@@ -151,4 +151,7 @@ public interface DoctorMapper {
      */
     @Update("update doctor set avatar = #{url} where id = #{id}")
     void updateAvatar(Long id, String url);
+
+    @Select("select avatar from doctor where id = #{doctorId}")
+    String selectAvatar(long doctorId);
 }

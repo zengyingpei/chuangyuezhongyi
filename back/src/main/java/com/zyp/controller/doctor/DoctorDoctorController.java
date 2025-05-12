@@ -10,10 +10,7 @@ import com.zyp.utils.JwtUtil;
 import com.zyp.vo.DoctorLoginVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -93,11 +90,17 @@ public class DoctorDoctorController {
      * @ author DELL
      */
     @PostMapping("/updateAvatar")
-    public Result updateAvatar(MultipartFile file) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+    public Result<String> updateAvatar(MultipartFile file) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         log.info("file={}",file);
         String url = doctorDoctorService.updateAvatar(file);
         if(url==null || url.isEmpty()) return Result.error("上传失败");
-        else return Result.success();
+        else return Result.success(url);
+    }
+
+    @GetMapping("/avatar")
+    public Result<String> selectAvatar(){
+        String url = doctorDoctorService.selectAvatar();
+        return Result.success(url);
     }
 
 

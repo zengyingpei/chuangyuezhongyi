@@ -40,7 +40,8 @@
 
 .aside{
     width: 10vw;
-    background-color: antiquewhite;
+    color: white;
+    background-color: #2e3238;
 }
 .main{
     width: 90vw;
